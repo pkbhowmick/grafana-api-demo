@@ -123,8 +123,45 @@ func (c *Client) DeleteDashboardByUID(ctx context.Context, uid string) (*Grafana
 	return gResp, nil
 }
 
+
+func replaceDatasource(model []byte, ds string) ([]byte,error) {
+	val := make(map[string]interface{})
+	err := json.Unmarshal(model, &val)
+	if err != nil {
+		return nil, err
+	}
+	panels := val["panels"].([]interface{})
+	var updatedPanels []interface{}
+	for _,p := range panels {
+		panel := p.(map[string]interface{})
+		panel["datasource"] = ds
+		updatedPanels = append(updatedPanels, panel)
+	}
+	val["panels"] = updatedPanels
+
+	templateList := val["templating"].(map[string]interface{})
+	templateVars := templateList["list"].([]interface{})
+
+	var newVars []interface{}
+	for _, v := range templateVars {
+		vr := v.(map[string]interface{})
+		ty := vr["type"].(string)
+		vr["datasource"] = ds
+		if ty != "datasource" {
+			newVars = append(newVars, vr)
+		}
+	}
+	templateList["list"] = newVars
+
+	return json.Marshal(val)
+}
+
 func main() {
 	model, err := ioutil.ReadFile("static/model.json")
+	if err != nil {
+		panic(err)
+	}
+	upModel, err := replaceDatasource(model, "prometheus-ds")
 	if err != nil {
 		panic(err)
 	}
@@ -135,7 +172,7 @@ func main() {
 	}
 
 	db := &Dashboard{
-		Dashboard: &runtime.RawExtension{Raw: model},
+		Dashboard: &runtime.RawExtension{Raw: upModel},
 		FolderId:  0,
 		Message:   "",
 		Overwrite: true,
