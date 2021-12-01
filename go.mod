@@ -3,12 +3,13 @@ module github.com/pkbhowmick/grafana-api-demo
 go 1.17
 
 require (
-	github.com/go-resty/resty/v2 v2.7.0
+	go.openviz.dev/grafana-sdk v0.0.0-20211201053540-5f38ae39a203
 	k8s.io/apimachinery v0.22.4
 )
 
 require (
 	github.com/go-logr/logr v0.4.0 // indirect
+	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

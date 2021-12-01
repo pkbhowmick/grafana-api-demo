@@ -16,6 +16,9 @@ github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
 ## explicit
 github.com/modern-go/reflect2
+# go.openviz.dev/grafana-sdk v0.0.0-20211201053540-5f38ae39a203
+## explicit; go 1.17
+go.openviz.dev/grafana-sdk
 # golang.org/x/net v0.0.0-20211029224645-99673261e6eb
 ## explicit; go 1.17
 golang.org/x/net/publicsuffix
